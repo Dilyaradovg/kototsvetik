@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас — КотоЦветик</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Poppins', sans-serif;
+            background-color: #fff5f9;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 200, 220, 0.2) 2%, transparent 2.5%),
+                              radial-gradient(circle at 80% 70%, rgba(255, 180, 210, 0.25) 1.8%, transparent 2.2%),
+                              repeating-linear-gradient(45deg, rgba(255, 220, 240, 0.2) 0px, rgba(255, 220, 240, 0.2) 2px, transparent 2px, transparent 8px);
+            background-size: 40px 40px, 35px 35px, auto;
+            min-height: 100vh;
+            color: #4a2e3a;
+        }
+
+        /* плавающие цветочки — медленные и нежные */
+        .flower-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .flower {
+            position: absolute;
+            opacity: 0.5;
+            animation: gentleFloat 22s infinite ease-in-out;
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 6px rgba(255, 120, 160, 0.2));
+        }
+
+        @keyframes gentleFloat {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-18px) rotate(3deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+        }
+
+        /* разная скорость для каждого цветка */
+        .flower:nth-child(1) { animation-duration: 24s; }
+        .flower:nth-child(2) { animation-duration: 28s; animation-delay: -3s; }
+        .flower:nth-child(3) { animation-duration: 26s; animation-delay: -5s; }
+        .flower:nth-child(4) { animation-duration: 30s; animation-delay: -2s; }
+        .flower:nth-child(5) { animation-duration: 27s; animation-delay: -7s; }
+        .flower:nth-child(6) { animation-duration: 32s; animation-delay: -4s; }
+        .flower:nth-child(7) { animation-duration: 25s; animation-delay: -6s; }
+        .flower:nth-child(8) { animation-duration: 29s; animation-delay: -8s; }
+        .flower:nth-child(9) { animation-duration: 31s; animation-delay: -1s; }
+        .flower:nth-child(10) { animation-duration: 33s; animation-delay: -9s; }
+
+        /* кошачьи лапки следы */
+        .paw-print {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2rem;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+            animation: wiggle 4s infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: translateX(0px) rotate(0deg); }
+            25% { transform: translateX(-4px) rotate(-4deg); }
+            75% { transform: translateX(4px) rotate(4deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(255, 245, 250, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(255, 140, 170, 0.15);
+            border: 1px solid rgba(255, 200, 220, 0.8);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #e892b2;
+        }
+
+        .logo span {
+            background: #ffeef4;
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #b15e7c;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover {
+            color: #ff88aa;
+            transform: scale(1.05);
+        }
+
+        .hero {
+            text-align: center;
+            background: rgba(255, 240, 245, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 70px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            border: 2px solid #ffe2ed;
+            box-shadow: 0 20px 35px rgba(255, 120, 160, 0.1);
+        }
+
+        .hero h1 {
+            font-size: 2.7rem;
+            color: #e07a9e;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 650px;
+            margin: 0 auto;
+            color: #7a4f62;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 250, 252, 0.9);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            padding: 1.8rem;
+            transition: all 0.25s ease;
+            border: 1px solid #ffe0ec;
+            box-shadow: 0 10px 20px rgba(240, 128, 160, 0.08);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: white;
+            border-color: #ffc0d0;
+            box-shadow: 0 20px 30px rgba(255, 110, 150, 0.15);
+        }
+
+        .card h3 {
+            color: #d4668a;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: #795a68;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0 1rem;
+            color: #c2849e;
+            border-top: 2px solid #ffe2ef;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 0.8rem 1rem 2rem;
+            }
+            header {
+                flex-direction: column;
+                gap: 0.8rem;
+                border-radius: 40px;
+            }
+            nav ul {
+                gap: 1.2rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- цветочки на фоне — медленно плавают -->
+    <div class="flower-bg">
+        <div class="flower" style="top: 5%; left: 3%;">🌸</div>
+        <div class="flower" style="top: 15%; right: 5%; font-size: 2.3rem;">🌼</div>
+        <div class="flower" style="bottom: 12%; left: 8%;">🌷</div>
+        <div class="flower" style="bottom: 25%; right: 10%;">🌺</div>
+        <div class="flower" style="top: 40%; left: 20%;">🌻</div>
+        <div class="flower" style="top: 70%; right: 18%;">🌿🌸</div>
+        <div class="flower" style="bottom: 5%; right: 30%;">🍓🌸</div>
+        <div class="flower" style="top: 85%; left: 45%;">🌼</div>
+        <div class="flower" style="top: 20%; left: 75%;">🌸</div>
+        <div class="flower" style="top: 60%; left: 15%;">🌺</div>
+    </div>
+
+    <div class="paw-print">🐾🐱</div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span>🐱🌸</span>
+                <span>КотоЦветик</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="blog.html">Мур-блог</a></li>
+                    <li><a href="community.html">Лапка дружбы</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="hero">
+                <h1>🐱🌸 о нас 🌸🐱</h1>
+                <p>Мы — КотоЦветик. Уютное место, где саморазвитие становится мягким, нежным и вдохновляющим.</p>
+            </div>
+
+            <div class="cards-container">
+                <div class="card">
+                    <h3>🌷 наша миссия</h3>
+                    <p>Помогать людям расти и развиваться без стресса, в окружении поддержки и уюта. Мы верим, что учиться новому можно с радостью — как котик ловит солнечный зайчик 🌞</p>
+                </div>
+
+                <div class="card">
+                    <h3>🌸 кто мы</h3>
+                    <p>Команда из людей, которые любят котиков, цветы и делиться знаниями. Здесь каждый найдёт что-то тёплое и полезное для себя.</p>
+                </div>
+
+                <div class="card">
+                    <h3>🐾 что здесь есть</h3>
+                    <p>📖 Статьи о развитии · 💬 Уютное сообщество · 🐱 Поддержка и вдохновение · 🌸 Тёплая атмосфера</p>
+                </div>
+
+                <div class="card">
+                    <h3>✨ наши ценности</h3>
+                    <p>🌼 Нежность и забота · 🐱 Поддержка как у кошачьей стаи · 🌸 Развитие без выгорания · 💗 Искренность и тепло</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>🐱 с любовью и лепестками — КотоЦветик · место, где растут мечты 🌸💗</p>
+            <p style="font-size: 0.85rem; margin-top: 0.5rem;">✨ каждый день — новый цветочек знаний ✨</p>
+        </footer>
+    </div>
+</body>
+</html>

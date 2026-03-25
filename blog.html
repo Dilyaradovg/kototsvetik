@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блог — КотоЦветик</title>
+    <style>
+        /* скопируйте сюда все стили из index.html */
+        /* (весь блок <style> из index.html) */
+    </style>
+</head>
+<body>
+    <div class="flower-bg">
+        <div class="flower" style="top: 5%; left: 3%;">🌸</div>
+        <div class="flower" style="top: 15%; right: 5%;">🌼</div>
+        <div class="flower" style="bottom: 12%; left: 8%;">🌷</div>
+        <div class="flower" style="bottom: 25%; right: 10%;">🌺</div>
+        <div class="flower" style="top: 40%; left: 20%;">🌻</div>
+    </div>
+    <div class="paw-print">🐾🐱</div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span>🐱🌸</span>
+                <span>КотоЦветик</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="blog.html">Мур-блог</a></li>
+                    <li><a href="community.html">Лапка дружбы</a></li>
+                    <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="section-title">
+                <span>📚</span> все мур-статьи <span>🐱</span>
+            </div>
+            <div class="cards" id="allArticles">
+                <!-- сюда подгрузятся все статьи -->
+            </div>
+        </main>
+
+        <footer>
+            <p>🐱 с любовью и лепестками — КотоЦветик · место, где растут мечты 🌸💗</p>
+        </footer>
+    </div>
+
+    <script>
+        const articles = [
+            {
+                title: "Как учиться с удовольствием, как котик ловит бабочек 🦋",
+                summary: "Превращаем обучение в игру: 3 способа добавить радость и мурчание в каждый день.",
+                catEmoji: "🐱📚",
+                link: "articles/article1.html"
+            },
+            {
+                title: "Почему даже маленькие шаги = огромный цветущий сад 🌷",
+                summary: "Микро-привычки для саморазвития, которые работают (и не напрягают).",
+                catEmoji: "🌸🐾",
+                link: "articles/article2.html"
+            },
+            {
+                title: "Как найти «стаю мурлык»: секреты поддерживающего сообщества",
+                summary: "Вместе расти легче и вкуснее — делимся опытом и баночками счастья.",
+                catEmoji: "🐈🍰",
+                link: "articles/article3.html"
+            }
+        ];
+
+        const container = document.getElementById('allArticles');
+        if (container) {
+            container.innerHTML = articles.map(function(art) {
+                return `
+                    <div class="card">
+                        <h3><span class="cat-icon">${art.catEmoji}</span> ${art.title}</h3>
+                        <p>${art.summary}</p>
+                        <a href="${art.link}" class="read-more">читать дальше → 🌸</a>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
