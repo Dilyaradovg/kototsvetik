@@ -41,9 +41,18 @@
         }
 
         @keyframes floatFlower {
-            0% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-30px) rotate(8deg); opacity: 0.7; }
-            100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            0% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.3; 
+            }
+            50% { 
+                transform: translateY(-30px) rotate(8deg); 
+                opacity: 0.7; 
+            }
+            100% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.3; 
+            }
         }
 
         .flower:nth-child(1) { animation-duration: 22s; }
@@ -331,8 +340,14 @@
         }
 
         @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .notebook-header {
@@ -433,32 +448,6 @@
             display: none;
         }
 
-        .link-box {
-            margin-top: 1rem;
-            padding: 0.8rem;
-            background: #fff0f5;
-            border-radius: 30px;
-            text-align: center;
-            display: none;
-        }
-
-        .link-box a {
-            color: #e07a9e;
-            word-break: break-all;
-            font-size: 0.85rem;
-        }
-
-        .copy-btn {
-            background: #ffc0d6;
-            color: #b34e72;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            margin-top: 0.5rem;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
         @media (max-width: 700px) {
             .container {
                 padding: 0.8rem 1rem 2rem;
@@ -556,12 +545,8 @@
                     <textarea id="noteContent" placeholder="Пиши здесь всё, что хочешь рассказать или предложить..."></textarea>
                 </div>
                 <button type="submit" class="send-btn">✨ отправить мне ✨</button>
-                <div id="successMessage" class="success-message"></div>
-                <div id="linkBox" class="link-box">
-                    <p>📋 Скопируй ссылку и отправь мне в Telegram:</p>
-                    <a href="#" id="telegramLink" target="_blank">Открыть Telegram</a>
-                    <br>
-                    <button id="copyBtn" class="copy-btn">📎 Скопировать ссылку</button>
+                <div id="successMessage" class="success-message">
+                    🎉 Спасибо! Твоя заметка улетела ко мне 🌸🐱
                 </div>
             </form>
         </div>
@@ -569,6 +554,7 @@
 </div>
 
 <script>
+    // статьи
     const articles = [
         {
             title: "Как учиться с удовольствием, как котик ловит бабочек 🦋",
@@ -603,29 +589,24 @@
         }).join('');
     }
 
+    // ===== БЛОКНОТИК =====
     const modal = document.getElementById('notebookModal');
     const openBtn = document.getElementById('openNotebookBtn');
     const closeBtn = document.getElementById('closeNotebookBtn');
     const form = document.getElementById('noteForm');
     const successMsg = document.getElementById('successMessage');
-    const linkBox = document.getElementById('linkBox');
-    const telegramLink = document.getElementById('telegramLink');
-    const copyBtn = document.getElementById('copyBtn');
 
     const BOT_TOKEN = '8730796005:AAGsIcQvUkIu0jfwidwPn5MMFsqzqGdSJAA';
     const CHAT_ID = '1659191934';
 
     openBtn.addEventListener('click', function() {
         modal.style.display = 'flex';
-        linkBox.style.display = 'none';
-        successMsg.style.display = 'none';
     });
 
     closeBtn.addEventListener('click', function() {
         modal.style.display = 'none';
         form.reset();
         successMsg.style.display = 'none';
-        linkBox.style.display = 'none';
     });
 
     modal.addEventListener('click', function(e) {
@@ -633,10 +614,10 @@
             modal.style.display = 'none';
             form.reset();
             successMsg.style.display = 'none';
-            linkBox.style.display = 'none';
         }
     });
 
+    // ОТПРАВКА ЧЕРЕЗ CORS-ПРОКСИ
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -651,30 +632,49 @@
         
         const message = `📝 НОВАЯ ЗАМЕТКА!\n\n🐱 Имя: ${name}\n📖 Название: ${title}\n🌸 Текст:\n${content || '— без текста —'}\n\n✨ Отправлено с сайта КотоЦветик`;
         
-        const encodedMessage = encodeURIComponent(message);
-        const tgUrl = `https://t.me/share/url?url=${encodedMessage}&text=${encodedMessage}`;
+        const sendButton = document.querySelector('.send-btn');
+        const originalText = sendButton.textContent;
+        sendButton.textContent = '🔄 отправляем...';
+        sendButton.disabled = true;
         
-        telegramLink.href = tgUrl;
-        
-        successMsg.innerHTML = '✨ Готово! Теперь отправь заметку в Telegram ✨';
-        successMsg.style.display = 'block';
-        linkBox.style.display = 'block';
-        
-        form.reset();
-        
-        setTimeout(() => {
-            modal.style.display = 'none';
-            successMsg.style.display = 'none';
-            linkBox.style.display = 'none';
-        }, 5000);
-    });
-    
-    copyBtn.addEventListener('click', function() {
-        navigator.clipboard.writeText(telegramLink.href);
-        copyBtn.textContent = '✅ Скопировано!';
-        setTimeout(() => {
-            copyBtn.textContent = '📎 Скопировать ссылку';
-        }, 2000);
+        try {
+            // Используем CORS-прокси для обхода блокировки
+            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+            const targetUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            
+            const response = await fetch(proxyUrl + targetUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            });
+            
+            const result = await response.json();
+            console.log('Ответ от Telegram:', result);
+            
+            if (result.ok) {
+                successMsg.style.display = 'block';
+                form.reset();
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                    modal.style.display = 'none';
+                }, 2000);
+            } else {
+                console.error('Ошибка от Telegram:', result);
+                alert('❌ Ошибка: ' + (result.description || 'Не удалось отправить. Проверь токен и ID 💗'));
+            }
+        } catch (error) {
+            console.error('Ошибка отправки:', error);
+            alert('❌ Не удалось отправить. Возможно, нужно разрешить прокси. Попробуй открыть ссылку ниже и нажать "Request temporary access".\n\nhttps://cors-anywhere.herokuapp.com/');
+        } finally {
+            sendButton.textContent = originalText;
+            sendButton.disabled = false;
+        }
     });
 </script>
 
