@@ -3,19 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Блог — КотоЦветик</title>
+    <title>Мур-блог — КотоЦветик</title>
     <style>
-        /* скопируйте сюда все стили из index.html */
-        /* (весь блок <style> из index.html) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Poppins', sans-serif;
+            background-color: #fff5f9;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 200, 220, 0.2) 2%, transparent 2.5%),
+                              radial-gradient(circle at 80% 70%, rgba(255, 180, 210, 0.25) 1.8%, transparent 2.2%),
+                              repeating-linear-gradient(45deg, rgba(255, 220, 240, 0.2) 0px, rgba(255, 220, 240, 0.2) 2px, transparent 2px, transparent 8px);
+            background-size: 40px 40px, 35px 35px, auto;
+            min-height: 100vh;
+            color: #4a2e3a;
+        }
+
+        /* плавающие цветочки */
+        .flower-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .flower {
+            position: absolute;
+            opacity: 0.5;
+            animation: gentleFloat 22s infinite ease-in-out;
+            font-size: 2rem;
+            filter: drop-shadow(0 2px 6px rgba(255, 120, 160, 0.2));
+        }
+
+        @keyframes gentleFloat {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-18px) rotate(3deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+        }
+
+        .flower:nth-child(1) { animation-duration: 24s; }
+        .flower:nth-child(2) { animation-duration: 28s; animation-delay: -3s; }
+        .flower:nth-child(3) { animation-duration: 26s; animation-delay: -5s; }
+        .flower:nth-child(4) { animation-duration: 30s; animation-delay: -2s; }
+        .flower:nth-child(5) { animation-duration: 27s; animation-delay: -7s; }
+        .flower:nth-child(6) { animation-duration: 32s; animation-delay: -4s; }
+        .flower:nth-child(7) { animation-duration: 25s; animation-delay: -6s; }
+        .flower:nth-child(8) { animation-duration: 29s; animation-delay: -8s; }
+
+        /* кошачьи лапки следы */
+        .paw-print {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2rem;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+            animation: wiggle 4s infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: translateX(0px) rotate(0deg); }
+            25% { transform: translateX(-4px) rotate(-4deg); }
+            75% { transform: translateX(4px) rotate(4deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: rgba(255, 245, 250, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(255, 140, 170, 0.15);
+            border: 1px solid rgba(255, 200, 220, 0.8);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #e892b2;
+        }
+
+        .logo span {
+            background: #ffeef4;
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #b15e7c;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover {
+            color: #ff88aa;
+            transform: scale(1.05);
+        }
+
+        /* активная вкладка */
+        nav a.active {
+            color: #e07a9e;
+            background: rgba(255, 200, 220, 0.4);
+            border-radius: 40px;
+            padding: 0.5rem 1rem;
+            margin: -0.5rem 0;
+            position: relative;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: #e07a9e;
+            border-radius: 3px;
+            animation: glowPulse 1.5s infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.5; width: 20px; }
+            50% { opacity: 1; width: 35px; box-shadow: 0 0 5px #ff99bb; }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin: 2rem 0 1.2rem;
+            text-align: center;
+            color: #e382a6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .card {
+            background: rgba(255, 250, 252, 0.95);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            padding: 1.8rem;
+            transition: all 0.25s ease;
+            border: 1px solid #ffe0ec;
+            box-shadow: 0 10px 20px rgba(240, 128, 160, 0.08);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: white;
+            border-color: #ffc0d0;
+            box-shadow: 0 20px 30px rgba(255, 110, 150, 0.15);
+        }
+
+        .card h3 {
+            color: #d4668a;
+            font-size: 1.5rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: #795a68;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+
+        .cat-icon {
+            font-size: 2rem;
+        }
+
+        .read-more {
+            color: #e87ea2;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .read-more:hover {
+            color: #ff99bb;
+            gap: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0 1rem;
+            color: #c2849e;
+            border-top: 2px solid #ffe2ef;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 0.8rem 1rem 2rem;
+            }
+            header {
+                flex-direction: column;
+                gap: 0.8rem;
+                border-radius: 40px;
+            }
+            nav ul {
+                gap: 1.2rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+
     <div class="flower-bg">
         <div class="flower" style="top: 5%; left: 3%;">🌸</div>
-        <div class="flower" style="top: 15%; right: 5%;">🌼</div>
+        <div class="flower" style="top: 15%; right: 5%; font-size: 2.3rem;">🌼</div>
         <div class="flower" style="bottom: 12%; left: 8%;">🌷</div>
         <div class="flower" style="bottom: 25%; right: 10%;">🌺</div>
         <div class="flower" style="top: 40%; left: 20%;">🌻</div>
+        <div class="flower" style="top: 70%; right: 18%;">🌿🌸</div>
+        <div class="flower" style="bottom: 5%; right: 30%;">🍓🌸</div>
+        <div class="flower" style="top: 85%; left: 45%;">🌼</div>
+        <div class="flower" style="top: 20%; left: 75%;">🌸</div>
     </div>
     <div class="paw-print">🐾🐱</div>
 
@@ -28,7 +292,7 @@
             <nav>
                 <ul>
                     <li><a href="index.html">Главная</a></li>
-                    <li><a href="blog.html">Мур-блог</a></li>
+                    <li><a href="blog.html" class="active">Мур-блог</a></li>
                     <li><a href="community.html">Лапка дружбы</a></li>
                     <li><a href="about.html">О нас</a></li>
                 </ul>
@@ -40,34 +304,59 @@
                 <span>📚</span> все мур-статьи <span>🐱</span>
             </div>
             <div class="cards" id="allArticles">
-                <!-- сюда подгрузятся все статьи -->
+                <!-- статьи подгрузятся через js -->
             </div>
         </main>
 
         <footer>
             <p>🐱 с любовью и лепестками — КотоЦветик · место, где растут мечты 🌸💗</p>
+            <p style="font-size: 0.85rem; margin-top: 0.5rem;">✨ каждый день — новый цветочек знаний ✨</p>
         </footer>
     </div>
 
     <script>
         const articles = [
             {
+                title: "Как котики помогают нам развиваться 🐱💗",
+                summary: "Мурчание, осознанность и кошачья мудрость — узнайте, почему коты лучшие наставники в саморазвитии. Исследования и личный опыт.",
+                catEmoji: "🐱💗",
+                link: "cat.html",
+                longText: "Коты — удивительные создания. Они учат нас быть в моменте, снижать стресс и находить радость в простых вещах. Мурчание кота на частоте 20–140 Гц помогает заживлению тканей и снижению уровня кортизола. Наблюдая за котами, мы учимся осознанности и настойчивости. Они не сдаются, если хотят добиться своего, но при этом умеют расслабляться и наслаждаться жизнью. В этой статье мы разберём 5 способов, как коты могут стать вашими личными коучами по саморазвитию! 🌸"
+            },
+            {
                 title: "Как учиться с удовольствием, как котик ловит бабочек 🦋",
-                summary: "Превращаем обучение в игру: 3 способа добавить радость и мурчание в каждый день.",
+                summary: "Превращаем обучение в игру: 3 способа добавить радость и мурчание в каждый день. Учимся у котов легкости и любопытству.",
                 catEmoji: "🐱📚",
-                link: "articles/article1.html"
+                link: "cat.html",
+                longText: "Котик, который ловит бабочку, не думает о результате — ему интересен сам процесс. Так же и в обучении: когда нам интересно, знания усваиваются легко и надолго. В статье вы найдёте 3 простых способа сделать учёбу игрой: геймификация, метод маленьких шагов и поиск вдохновляющего сообщества. Плюс бонус — как мурчание помогает запоминать новое! 🦋✨"
             },
             {
                 title: "Почему даже маленькие шаги = огромный цветущий сад 🌷",
-                summary: "Микро-привычки для саморазвития, которые работают (и не напрягают).",
+                summary: "Микро-привычки для саморазвития, которые работают (и не напрягают). Как 5 минут в день меняют жизнь.",
                 catEmoji: "🌸🐾",
-                link: "articles/article2.html"
+                link: "#",
+                longText: "Представьте, что каждый день вы поливаете один маленький цветочек. Через месяц у вас целый сад! Так же работают микро-привычки: 5 минут чтения, 10 минут прогулки, одно доброе дело в день. Коты в этом мастера — они каждый день находят время на важное: поесть, поспать на солнышке, поиграть. И при этом всегда довольны! В статье — план внедрения микро-привычек без стресса и выгорания. 🌷"
             },
             {
-                title: "Как найти «стаю мурлык»: секреты поддерживающего сообщества",
-                summary: "Вместе расти легче и вкуснее — делимся опытом и баночками счастья.",
+                title: "Как найти «стаю мурлык»: секреты поддерживающего сообщества 🐈",
+                summary: "Вместе расти легче и вкуснее — делимся опытом и баночками счастья. Где искать единомышленников и как создать уютное комьюнити.",
                 catEmoji: "🐈🍰",
-                link: "articles/article3.html"
+                link: "#",
+                longText: "Коты — социальные животные, даже если любят одиночество. Они знают: своя стая — это безопасно и тепло. В этой статье мы расскажем, как найти своё сообщество по интересам, как поддерживать друг друга и почему вместе развиваться легче. А ещё — как создать свой маленький «котоЦветик» в реальной жизни! 🐾💗"
+            },
+            {
+                title: "Утро с котом: как начать день продуктивно 🌞",
+                summary: "Ритуалы от котиков, которые помогут настроиться на день и сохранить энергию. Мурчащее утро = хороший день!",
+                catEmoji: "🐱☀️",
+                link: "#",
+                longText: "Коты не вскакивают по будильнику в панике. Они потягиваются, умываются, смотрят в окно. А потом уже идут завтракать. Эта статья — про утренние ритуалы, которые заряжают энергией. Потягивания, глубокое дыхание, отсутствие телефона в первые 15 минут — всё это коты делают интуитивно. Давайте учиться у них! 🌸"
+            },
+            {
+                title: "Кошачья мудрость: 5 уроков для спокойной жизни 🧘‍♀️",
+                summary: "Что мы можем позаимствовать у котов, чтобы быть счастливее и меньше нервничать. Практические советы.",
+                catEmoji: "🐱🧘",
+                link: "#",
+                longText: "Коты не переживают о будущем. Они живут здесь и сейчас. Учат нас говорить «нет», если не хочется, просить о помощи, когда нужно, и мурчать в удовольствие. В статье — 5 уроков от котов, которые помогут снизить тревожность, найти баланс и радоваться жизни. И да, всё это работает! Проверено на себе 🐱💗"
             }
         ];
 
